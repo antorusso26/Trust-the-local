@@ -1,150 +1,64 @@
-"use client";
+export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import Link from "next/link";
+import { createServiceRoleClient } from "@/lib/supabase/server";
 
-interface Shop {
-  id: string;
-  name: string;
-  partita_iva: string;
-  email: string;
-  qr_code_id: string;
-  split_percentage_default: number;
-  active: boolean;
-  created_at: string;
-}
+export default async function AdminShopsPage() {
+  const db = createServiceRoleClient();
 
-export default function AdminShopsPage() {
-  const [shops, setShops] = useState<Shop[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [newShop, setNewShop] = useState({
-    name: "",
-    partitaIva: "",
-    email: "",
-    phone: "",
-    iban: "",
-    address: "",
-    splitPercentage: 10,
-  });
-  const [creating, setCreating] = useState(false);
-
-  useEffect(() => {
-    loadShops();
-  }, []);
-
-  const loadShops = async () => {
-    const res = await fetch("/api/shops");
-    const data = await res.json();
-    setShops(data.shops || []);
-    setLoading(false);
-  };
-
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setCreating(true);
-
-    const res = await fetch("/api/shops", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newShop),
-    });
-
-    if (res.ok) {
-      setNewShop({ name: "", partitaIva: "", email: "", phone: "", iban: "", address: "", splitPercentage: 10 });
-      loadShops();
-    }
-    setCreating(false);
-  };
-
-  const downloadQr = (shopId: string, format: string) => {
-    window.open(`/api/shops/qr?shopId=${shopId}&format=${format}`, "_blank");
-  };
+  const { data: shops } = await db
+    .from("shops")
+    .select("*")
+    .order("created_at", { ascending: false });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Negozi Affiliati</h1>
-        <Dialog>
-          <DialogTrigger>
-            <Button>+ Nuovo Negozio</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Aggiungi Negozio</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="space-y-3">
-              <div>
-                <Label>Nome</Label>
-                <Input required value={newShop.name} onChange={(e) => setNewShop({ ...newShop, name: e.target.value })} />
-              </div>
-              <div>
-                <Label>Partita IVA</Label>
-                <Input required value={newShop.partitaIva} onChange={(e) => setNewShop({ ...newShop, partitaIva: e.target.value })} />
-              </div>
-              <div>
-                <Label>Email</Label>
-                <Input required type="email" value={newShop.email} onChange={(e) => setNewShop({ ...newShop, email: e.target.value })} />
-              </div>
-              <div>
-                <Label>IBAN</Label>
-                <Input value={newShop.iban} onChange={(e) => setNewShop({ ...newShop, iban: e.target.value })} />
-              </div>
-              <div>
-                <Label>Commissione (%)</Label>
-                <Input type="number" min={1} max={50} value={newShop.splitPercentage} onChange={(e) => setNewShop({ ...newShop, splitPercentage: parseInt(e.target.value) })} />
-              </div>
-              <Button type="submit" className="w-full" disabled={creating}>
-                {creating ? "Creazione..." : "Crea Negozio e Genera QR"}
-              </Button>
-            </form>
-          </DialogContent>
-        </Dialog>
+    <div className="p-8 max-w-6xl mx-auto">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-2xl font-bold text-[#1B2A4A]">Shop & QR Code</h1>
+          <p className="text-gray-500 mt-1">{(shops || []).length} negozi affiliati</p>
+        </div>
       </div>
 
-      {loading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => <div key={i} className="h-20 animate-pulse rounded-lg bg-gray-100" />)}
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-50 border-b border-gray-100">
+              <tr>
+                {["Nome", "P.IVA", "Email", "Commissione", "QR ID", "Dashboard", "Stato"].map((h) => (
+                  <th key={h} className="text-left px-4 py-3 text-gray-500 font-medium text-xs uppercase tracking-wide">{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {(shops || []).map((shop: { id: string; name: string; address?: string; partita_iva: string; email: string; split_percentage_default: number; qr_code_id: string; active: boolean }) => (
+                <tr key={shop.id} className="hover:bg-gray-50/50">
+                  <td className="px-4 py-3">
+                    <p className="font-medium text-[#1B2A4A]">{shop.name}</p>
+                    {shop.address && <p className="text-xs text-gray-400">{shop.address}</p>}
+                  </td>
+                  <td className="px-4 py-3 text-gray-600">{shop.partita_iva}</td>
+                  <td className="px-4 py-3 text-gray-600">{shop.email}</td>
+                  <td className="px-4 py-3 text-gray-600">{shop.split_percentage_default}%</td>
+                  <td className="px-4 py-3">
+                    <code className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">{shop.qr_code_id?.slice(0, 12)}...</code>
+                  </td>
+                  <td className="px-4 py-3">
+                    <Link href={`/dashboard/admin/shops/${shop.id}`} className="text-xs text-[#D4A843] font-medium hover:underline">
+                      Scansioni →
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${shop.active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"}`}>
+                      {shop.active ? "Attivo" : "Inattivo"}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ) : shops.length === 0 ? (
-        <Card><CardContent className="py-8 text-center text-gray-500">Nessun negozio affiliato.</CardContent></Card>
-      ) : (
-        <div className="space-y-3">
-          {shops.map((shop) => (
-            <Card key={shop.id}>
-              <CardContent className="flex items-center justify-between py-4">
-                <div>
-                  <p className="font-medium">{shop.name}</p>
-                  <p className="text-sm text-gray-500">
-                    P.IVA: {shop.partita_iva} &middot; {shop.email} &middot; Commissione: {shop.split_percentage_default}%
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant={shop.active ? "default" : "secondary"}>
-                    {shop.active ? "Attivo" : "Inattivo"}
-                  </Badge>
-                  <Button size="sm" variant="outline" onClick={() => downloadQr(shop.id, "png")}>
-                    QR PNG
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => downloadQr(shop.id, "svg")}>
-                    QR SVG
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
+      </div>
     </div>
   );
 }

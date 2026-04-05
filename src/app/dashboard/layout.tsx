@@ -1,17 +1,10 @@
 export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createServerSupabaseClient, createServiceRoleClient } from "@/lib/supabase/server";
+import { Sidebar } from "@/components/dashboard/Sidebar";
 
-interface DashboardLayoutProps {
-  children: React.ReactNode;
-}
-
-/**
- * Dashboard layout with auth guard (no middleware).
- * Checks auth via server component.
- */
-export default async function DashboardLayout({ children }: DashboardLayoutProps) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createServerSupabaseClient();
   const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -19,39 +12,40 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
     redirect("/login");
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Dashboard Header */}
-      <header className="border-b bg-white">
-        <div className="mx-auto flex h-14 max-w-screen-xl items-center justify-between px-4">
-          <a href="/dashboard/operator" className="text-lg font-bold">
-            Trust the Local
-          </a>
-          <nav className="flex items-center gap-4 text-sm">
-            <a href="/dashboard/operator" className="text-gray-600 hover:text-black">
-              Dashboard
-            </a>
-            <a href="/dashboard/operator/products" className="text-gray-600 hover:text-black">
-              Prodotti
-            </a>
-            <a href="/dashboard/operator/kyc" className="text-gray-600 hover:text-black">
-              KYC
-            </a>
-            <a href="/dashboard/operator/settings" className="text-gray-600 hover:text-black">
-              Impostazioni
-            </a>
-            <form action="/api/auth/signout" method="POST">
-              <button type="submit" className="text-gray-400 hover:text-red-600">
-                Esci
-              </button>
-            </form>
-          </nav>
-        </div>
-      </header>
+  const db = createServiceRoleClient();
 
-      <main className="mx-auto max-w-screen-xl px-4 py-6">
-        {children}
-      </main>
+  // Get user role
+  const { data: roleRow } = await db
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", user.id)
+    .single();
+
+  const role = (roleRow?.role as "tourist" | "operator" | "admin") || "tourist";
+
+  // Get display name
+  let userName = user.email?.split("@")[0] || "Utente";
+
+  if (role === "tourist") {
+    const { data: profile } = await db
+      .from("tourist_profiles")
+      .select("full_name")
+      .eq("user_id", user.id)
+      .single();
+    if (profile?.full_name) userName = profile.full_name;
+  } else if (role === "operator" || role === "admin") {
+    const { data: op } = await db
+      .from("operators")
+      .select("company_name")
+      .eq("user_id", user.id)
+      .single();
+    if (op?.company_name) userName = op.company_name;
+  }
+
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar role={role} userName={userName} />
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );
 }

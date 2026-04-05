@@ -18,3 +18,6 @@ export function stripe(): Stripe {
   }
   return _stripe;
 }
+
+/** Alias used by new API routes */
+export const getStripe = stripe;

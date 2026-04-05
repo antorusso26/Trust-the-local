@@ -30,6 +30,9 @@ export async function createServerSupabaseClient() {
   );
 }
 
+/** Alias used by new API routes */
+export const createAuthClient = createServerSupabaseClient;
+
 /**
  * Admin client with service role - bypasses RLS.
  * Use ONLY in server-side API routes for admin operations.
