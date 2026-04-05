@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ShopTracker } from "@/components/tracking/ShopTracker";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 import Link from "next/link";
 
 interface PublicLayoutProps {
@@ -53,12 +54,15 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
             </Link>
           </nav>
 
-          {/* Mobile menu button */}
-          <button className="sm:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
+          {/* Language Switcher + Mobile menu */}
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <button className="sm:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
       </header>
 
