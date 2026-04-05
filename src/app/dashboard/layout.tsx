@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createServerSupabaseClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 
@@ -22,6 +23,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
     .single();
 
   const role = (roleRow?.role as "tourist" | "operator" | "admin") || "tourist";
+
+  // Enforce role-based routing: redirect if accessing wrong dashboard
+  const headersList = await headers();
+  const pathname = headersList.get("x-next-pathname") || headersList.get("x-invoke-path") || "";
+
+  // If we can detect the pathname, enforce role boundaries
+  if (pathname) {
+    if (pathname.startsWith("/dashboard/operator") && role === "tourist") {
+      redirect("/dashboard/tourist");
+    }
+    if (pathname.startsWith("/dashboard/admin") && role !== "admin") {
+      redirect(`/dashboard/${role}`);
+    }
+    if (pathname.startsWith("/dashboard/tourist") && role === "operator") {
+      redirect("/dashboard/operator");
+    }
+  }
 
   // Get display name
   let userName = user.email?.split("@")[0] || "Utente";

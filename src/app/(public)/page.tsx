@@ -25,6 +25,7 @@ export default async function HomePage() {
       currency,
       duration_minutes,
       category,
+      price_type,
       operators!inner(company_name)
     `)
     .eq("active", true)

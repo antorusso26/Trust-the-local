@@ -10,6 +10,7 @@ interface TourCardProps {
   durationMinutes: number | null;
   operatorName: string;
   category?: string;
+  priceType?: string;
 }
 
 const categoryConfig: Record<string, { label: string; color: string }> = {
@@ -29,6 +30,7 @@ export function TourCard({
   durationMinutes,
   operatorName,
   category,
+  priceType,
 }: TourCardProps) {
   const formattedPrice = new Intl.NumberFormat("it-IT", {
     style: "currency",
@@ -114,7 +116,7 @@ export function TourCard({
 
           {/* CTA */}
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-warm-gray-light">a persona</span>
+            <span className="text-xs text-warm-gray-light">{priceType === "total" ? "prezzo totale" : "a persona"}</span>
             <span className="inline-flex items-center gap-1 text-sm font-semibold text-gold group-hover:gap-2 transition-all">
               Scopri di più
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

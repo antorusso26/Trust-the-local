@@ -15,6 +15,7 @@ interface TourFormProps {
     meeting_point?: string;
     includes?: string[];
     highlights?: string[];
+    price_type?: "per_person" | "total";
     active?: boolean;
   };
 }
@@ -39,6 +40,7 @@ export function TourForm({ initialData }: TourFormProps) {
   const [meetingPoint, setMeetingPoint] = useState(initialData?.meeting_point || "");
   const [includesText, setIncludesText] = useState((initialData?.includes || []).join("\n"));
   const [highlightsText, setHighlightsText] = useState((initialData?.highlights || []).join("\n"));
+  const [priceType, setPriceType] = useState<"per_person" | "total">(initialData?.price_type || "per_person");
   const [active, setActive] = useState(initialData?.active ?? true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -53,6 +55,7 @@ export function TourForm({ initialData }: TourFormProps) {
       description,
       category,
       price_cents: Math.round(parseFloat(price) * 100),
+      price_type: priceType,
       duration_minutes: duration ? parseInt(duration) : null,
       max_guests: parseInt(maxGuests),
       meeting_point: meetingPoint || null,
@@ -108,8 +111,24 @@ export function TourForm({ initialData }: TourFormProps) {
             </select>
           </div>
           <div>
-            <label className={labelClass}>Prezzo a persona (€) *</label>
+            <label className={labelClass}>Prezzo (€) *</label>
             <input type="number" step="0.01" min="1" value={price} onChange={(e) => setPrice(e.target.value)} required className={inputClass} placeholder="45.00" />
+            <div className="flex gap-2 mt-2">
+              <button
+                type="button"
+                onClick={() => setPriceType("per_person")}
+                className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${priceType === "per_person" ? "bg-[#D4A843] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              >
+                A persona
+              </button>
+              <button
+                type="button"
+                onClick={() => setPriceType("total")}
+                className={`text-xs px-3 py-1.5 rounded-full font-medium transition-colors ${priceType === "total" ? "bg-[#D4A843] text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+              >
+                Prezzo totale
+              </button>
+            </div>
           </div>
         </div>
 

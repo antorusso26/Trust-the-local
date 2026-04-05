@@ -75,6 +75,7 @@ export default async function EditTourPage({ params }: Props) {
             meeting_point: (tour as Record<string, unknown>).meeting_point as string || "",
             includes: ((tour as Record<string, unknown>).includes as string[]) || [],
             highlights: ((tour as Record<string, unknown>).highlights as string[]) || [],
+            price_type: ((tour as Record<string, unknown>).price_type as "per_person" | "total") || "per_person",
             active: tour.active,
           }}
         />

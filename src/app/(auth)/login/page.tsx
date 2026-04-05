@@ -32,7 +32,21 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard/operator");
+    // Redirect based on user role
+    const { data: { user: authUser } } = await supabase.auth.getUser();
+    if (authUser) {
+      const res = await fetch("/api/auth/role");
+      const roleData = await res.json();
+      if (roleData.role === "admin") {
+        router.push("/dashboard/admin");
+      } else if (roleData.role === "operator") {
+        router.push("/dashboard/operator");
+      } else {
+        router.push("/dashboard/tourist");
+      }
+    } else {
+      router.push("/dashboard/tourist");
+    }
   };
 
   return (
@@ -84,7 +98,7 @@ export default function LoginPage() {
             <div className="text-center mb-6">
               <h1 className="text-2xl font-heading font-bold text-navy">Accedi</h1>
               <p className="mt-1 text-sm text-warm-gray">
-                Accedi al portale operatore
+                Accedi al tuo account
               </p>
             </div>
 
@@ -127,12 +141,20 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-sm text-warm-gray">
-              Non hai un account?{" "}
-              <Link href="/register" className="font-semibold text-navy hover:text-gold transition-colors">
-                Registrati come operatore
-              </Link>
-            </p>
+            <div className="mt-6 text-center text-sm text-warm-gray space-y-2">
+              <p>
+                Sei un turista?{" "}
+                <Link href="/register-tourist" className="font-semibold text-navy hover:text-gold transition-colors">
+                  Crea account turista
+                </Link>
+              </p>
+              <p>
+                Sei un operatore?{" "}
+                <Link href="/register" className="font-semibold text-navy hover:text-gold transition-colors">
+                  Registra la tua azienda
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>

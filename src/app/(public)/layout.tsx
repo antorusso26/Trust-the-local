@@ -47,10 +47,16 @@ export default function PublicLayout({ children }: PublicLayoutProps) {
               Esperienze
             </Link>
             <Link
-              href="/login"
+              href="/dashboard/tourist"
               className="rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10"
             >
               Le Mie Prenotazioni
+            </Link>
+            <Link
+              href="/login"
+              className="rounded-full border border-gold px-4 py-2 text-sm font-medium text-gold transition-colors hover:bg-gold hover:text-white"
+            >
+              Operatori
             </Link>
           </nav>
 

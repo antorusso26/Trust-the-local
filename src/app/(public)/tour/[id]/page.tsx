@@ -96,6 +96,8 @@ export default async function TourPage({ params }: TourPageProps) {
   const highlights = ((tour as Record<string, unknown>).highlights as string[]) || [];
   const maxGuests = ((tour as Record<string, unknown>).max_guests as number) || 10;
   const meetingPoint = ((tour as Record<string, unknown>).meeting_point as string) || "";
+  const priceType = ((tour as Record<string, unknown>).price_type as string) || "per_person";
+  const priceLabel = priceType === "total" ? "totale" : "/ persona";
 
   return (
     <div>
@@ -168,7 +170,7 @@ export default async function TourPage({ params }: TourPageProps) {
             <div className="flex flex-wrap gap-3">
               <div className="inline-flex items-center gap-2 rounded-full bg-gold-bg px-4 py-2 text-sm font-semibold text-navy">
                 <span className="text-gold">€</span>
-                {formattedPrice} / persona
+                {formattedPrice} {priceLabel}
               </div>
               {tour.duration_minutes && (
                 <div className="inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 text-sm text-navy border border-gray-200">
@@ -283,7 +285,7 @@ export default async function TourPage({ params }: TourPageProps) {
               <div className="rounded-xl bg-white border border-gray-200 shadow-sm p-6">
                 <div className="text-center mb-4">
                   <span className="font-heading text-3xl font-bold text-navy">{formattedPrice}</span>
-                  <span className="text-sm text-warm-gray"> / persona</span>
+                  <span className="text-sm text-warm-gray"> {priceLabel}</span>
                 </div>
 
                 <TourBookingForm

@@ -29,6 +29,7 @@ export default async function EsperienzePage({ searchParams }: EsperienzePagePro
     currency,
     duration_minutes,
     category,
+    price_type,
     operators!inner(company_name)
   `;
   const selectWithoutCategory = `
@@ -39,6 +40,7 @@ export default async function EsperienzePage({ searchParams }: EsperienzePagePro
     price_cents,
     currency,
     duration_minutes,
+    price_type,
     operators!inner(company_name)
   `;
 

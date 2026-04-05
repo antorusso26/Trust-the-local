@@ -9,6 +9,7 @@ interface Tour {
   currency: string;
   duration_minutes: number | null;
   category?: string;
+  price_type?: string;
   operators: {
     company_name: string;
   };
@@ -47,6 +48,7 @@ export function TourGrid({ tours }: TourGridProps) {
           durationMinutes={tour.duration_minutes}
           operatorName={tour.operators.company_name}
           category={tour.category}
+          priceType={tour.price_type}
         />
       ))}
     </div>

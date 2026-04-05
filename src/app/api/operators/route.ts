@@ -73,6 +73,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Set user role to "operator"
+    await supabase
+      .from("user_roles")
+      .upsert({ user_id: userId, role: "operator" }, { onConflict: "user_id" });
+
     await auditLog({
       eventType: "operator.created",
       actorType: "operator",
