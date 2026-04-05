@@ -42,7 +42,7 @@ export default async function FavoritesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {(favorites as Array<{ tour_id: string; tours: { id: string; title: string; image_url?: string; price_cents: number; currency: string; duration_minutes?: number; category?: string; operators: { company_name: string } } }>).map((fav) => {
+          {(favorites as unknown as Array<{ tour_id: string; tours: { id: string; title: string; image_url?: string; price_cents: number; currency: string; duration_minutes?: number; category?: string; operators: { company_name: string } } }>).map((fav) => {
             const tour = fav.tours as { id: string; title: string; image_url?: string; price_cents: number; currency: string; duration_minutes?: number; category?: string; operators: { company_name: string } };
             return (
               <Link key={fav.tour_id} href={`/tour/${tour.id}`} className="group bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">

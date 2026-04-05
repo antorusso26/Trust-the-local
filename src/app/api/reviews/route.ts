@@ -112,7 +112,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: "Recensione non trovata" }, { status: 404 });
   }
 
-  const tourData = review.tours as { operators: { user_id: string } };
+  const tourData = review.tours as unknown as { operators: { user_id: string } };
   if (tourData.operators.user_id !== user.id) {
     return NextResponse.json({ error: "Non autorizzato" }, { status: 403 });
   }

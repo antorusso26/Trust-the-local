@@ -42,8 +42,8 @@ export default async function BookingPage({
   // Validate token if provided
   if (token && booking.cancel_token !== token) notFound();
 
-  const tour = booking.tours as { id: string; title: string; image_url?: string; description?: string; duration_minutes?: number; meeting_point?: string; category: string };
-  const operator = booking.operators as { company_name: string; email: string; phone?: string };
+  const tour = booking.tours as unknown as { id: string; title: string; image_url?: string; description?: string; duration_minutes?: number; meeting_point?: string; category: string };
+  const operator = booking.operators as unknown as { company_name: string; email: string; phone?: string };
 
   const hours = hoursUntilTour(booking.booking_date, booking.time_slot);
   const canCancel = booking.status === "confirmed" && hours > 0;

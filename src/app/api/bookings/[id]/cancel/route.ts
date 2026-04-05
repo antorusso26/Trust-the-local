@@ -96,29 +96,23 @@ export async function POST(
   }
 
   // Update availability (free up spots)
-  await db.rpc("decrement_booked_guests", {
-    p_tour_id: booking.tour_id,
-    p_date: booking.booking_date,
-    p_guests: booking.guests,
-  }).then(() => {}).catch(() => {
-    // RPC may not exist yet, manually update
-    db.from("tour_availability")
-      .select("booked_guests")
-      .eq("tour_id", booking.tour_id)
-      .eq("date", booking.booking_date)
-      .single()
-      .then(({ data: avail }: { data: { booked_guests: number } | null }) => {
-        if (avail) {
-          db.from("tour_availability")
-            .update({ booked_guests: Math.max(0, avail.booked_guests - booking.guests) })
-            .eq("tour_id", booking.tour_id)
-            .eq("date", booking.booking_date);
-        }
-      });
-  });
+  const { data: avail } = await db
+    .from("tour_availability")
+    .select("booked_guests")
+    .eq("tour_id", booking.tour_id)
+    .eq("date", booking.booking_date)
+    .single() as { data: { booked_guests: number } | null };
 
-  const tourData = booking.tours as { title: string };
-  const operatorData = booking.operators as { email: string; company_name: string };
+  if (avail) {
+    await db
+      .from("tour_availability")
+      .update({ booked_guests: Math.max(0, avail.booked_guests - booking.guests) })
+      .eq("tour_id", booking.tour_id)
+      .eq("date", booking.booking_date);
+  }
+
+  const tourData = booking.tours as unknown as { title: string };
+  const operatorData = booking.operators as unknown as { email: string; company_name: string };
   const refundFormatted = formatCents(refundAmountCents, "EUR");
 
   // Send emails

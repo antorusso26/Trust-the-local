@@ -42,7 +42,7 @@ export default async function TouristDashboardPage() {
     .order("booking_date", { ascending: false });
 
   type BookingRow = { id: string; status: string; booking_date: string; time_slot?: string; guests: number; amount_cents: number; created_at: string; cancel_token?: string; cancelled_at?: string; refund_percentage?: number; tours: { id: string; title: string; image_url?: string; duration_minutes?: number; category?: string }; operators: { company_name: string } };
-  const allBookings = (bookings || []) as BookingRow[];
+  const allBookings = (bookings || []) as unknown as BookingRow[];
   const upcoming = allBookings.filter(
     (b) => b.status === "confirmed" && new Date(b.booking_date) >= new Date()
   );

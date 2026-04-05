@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 /**
@@ -38,8 +39,6 @@ export const createAuthClient = createServerSupabaseClient;
  * Use ONLY in server-side API routes for admin operations.
  */
 export function createServiceRoleClient() {
-  // Dynamic require to avoid bundling in client
-  const { createClient } = require("@supabase/supabase-js");
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!

@@ -68,7 +68,7 @@ export default async function OperatorToursPage() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {(tours as Array<{ id: string; title: string; category: string; price_cents: number; duration_minutes?: number; image_url?: string; active: boolean; tour_images: Array<{ image_url: string; sort_order: number }> }>).map((tour) => {
+          {(tours as unknown as Array<{ id: string; title: string; category: string; price_cents: number; duration_minutes?: number; image_url?: string; active: boolean; tour_images: Array<{ image_url: string; sort_order: number }> }>).map((tour) => {
             const images = (tour.tour_images as Array<{ image_url: string; sort_order: number }> || []).sort((a, b) => a.sort_order - b.sort_order);
             const mainImage = images[0]?.image_url || tour.image_url;
 

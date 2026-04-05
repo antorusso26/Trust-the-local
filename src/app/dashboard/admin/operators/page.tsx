@@ -52,7 +52,7 @@ export default async function AdminOperatorsPage() {
                       {op.stripe_account_id ? "Connesso" : "Non connesso"}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-gray-600">{(op.tours as Array<{ id: string }>)?.length || 0}</td>
+                  <td className="px-4 py-3 text-gray-600">{(op.tours as unknown as Array<{ id: string }>)?.length || 0}</td>
                   <td className="px-4 py-3">
                     <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusColor[op.onboarding_status]}`}>
                       {statusLabel[op.onboarding_status]}

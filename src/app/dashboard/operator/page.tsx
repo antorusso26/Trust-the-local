@@ -126,8 +126,8 @@ export default async function OperatorDashboardPage() {
             <p className="text-gray-400 text-sm text-center py-6">Nessuna prenotazione ancora</p>
           ) : (
             <div className="space-y-3">
-              {(recentBookings as Array<{ id: string; customer_name?: string; booking_date: string; status: string; amount_cents: number; tours: { title: string } }>).map((b) => {
-                const tour = b.tours as { title: string };
+              {(recentBookings as unknown as Array<{ id: string; customer_name?: string; booking_date: string; status: string; amount_cents: number; tours: { title: string } }>).map((b) => {
+                const tour = b.tours as unknown as { title: string };
                 const date = new Date(b.booking_date).toLocaleDateString("it-IT", { day: "numeric", month: "short" });
                 return (
                   <div key={b.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">

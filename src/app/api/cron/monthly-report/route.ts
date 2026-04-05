@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
     // Find top tour
     const tourCounts: Record<string, { title: string; count: number }> = {};
     for (const b of bookings) {
-      const tourTitle = (b.tours as { title: string }).title;
+      const tourTitle = (b.tours as unknown as { title: string }).title;
       if (!tourCounts[b.tour_id]) {
         tourCounts[b.tour_id] = { title: tourTitle, count: 0 };
       }

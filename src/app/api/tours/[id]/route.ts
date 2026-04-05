@@ -65,7 +65,7 @@ export async function PUT(
     .eq("id", id)
     .single();
 
-  if (!tour || (tour.operators as { user_id: string }).user_id !== user.id) {
+  if (!tour || (tour.operators as unknown as { user_id: string }).user_id !== user.id) {
     return NextResponse.json({ error: "Non autorizzato" }, { status: 403 });
   }
 
@@ -111,7 +111,7 @@ export async function DELETE(
     .eq("id", id)
     .single();
 
-  if (!tour || (tour.operators as { user_id: string }).user_id !== user.id) {
+  if (!tour || (tour.operators as unknown as { user_id: string }).user_id !== user.id) {
     return NextResponse.json({ error: "Non autorizzato" }, { status: 403 });
   }
 

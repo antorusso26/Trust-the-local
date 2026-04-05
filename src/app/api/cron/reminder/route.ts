@@ -32,8 +32,8 @@ export async function GET(request: NextRequest) {
 
   let sent = 0;
   for (const booking of bookings || []) {
-    const tourData = booking.tours as { title: string; meeting_point?: string };
-    const operatorData = booking.operators as { company_name: string };
+    const tourData = booking.tours as unknown as { title: string; meeting_point?: string };
+    const operatorData = booking.operators as unknown as { company_name: string };
 
     const emailContent = bookingReminderEmail({
       customerName: booking.customer_name || "Viaggiatore",
