@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "@/i18n/TranslationProvider";
 
 interface TourCardProps {
   id: string;
@@ -32,6 +35,8 @@ export function TourCard({
   category,
   priceType,
 }: TourCardProps) {
+  const { t } = useTranslation();
+
   const formattedPrice = new Intl.NumberFormat("it-IT", {
     style: "currency",
     currency: currency.toUpperCase(),
@@ -40,10 +45,10 @@ export function TourCard({
   }).format(priceCents / 100);
 
   const formatDuration = (minutes: number) => {
-    if (minutes < 60) return `${minutes} min`;
+    if (minutes < 60) return `${minutes} ${t("tour.minutes", "min")}`;
     const h = Math.floor(minutes / 60);
     const m = minutes % 60;
-    return m > 0 ? `${h}h ${m}min` : `${h} ore`;
+    return m > 0 ? `${h}h ${m}${t("tour.minutes", "min")}` : `${h} ${t("tour.hours", "ore")}`;
   };
 
   const cat = categoryConfig[category || "tour"] || categoryConfig.tour;
@@ -68,14 +73,14 @@ export function TourCard({
             </div>
           )}
 
-          {/* Category badge - top left */}
+          {/* Category badge */}
           <div className="absolute top-3 left-3">
             <span className={`inline-block rounded-md ${cat.color} px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white`}>
               {cat.label}
             </span>
           </div>
 
-          {/* Price badge - top right */}
+          {/* Price badge */}
           <div className="absolute top-3 right-3">
             <span className="inline-block rounded-full bg-gold px-4 py-1.5 text-sm font-bold text-white shadow-md">
               {formattedPrice}
@@ -116,9 +121,11 @@ export function TourCard({
 
           {/* CTA */}
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-            <span className="text-xs text-warm-gray-light">{priceType === "total" ? "prezzo totale" : "a persona"}</span>
+            <span className="text-xs text-warm-gray-light">
+              {priceType === "total" ? t("tour.totalPrice", "prezzo totale") : t("tour.perPerson", "a persona")}
+            </span>
             <span className="inline-flex items-center gap-1 text-sm font-semibold text-gold group-hover:gap-2 transition-all">
-              Scopri di più
+              {t("tour.discover", "Scopri di più")}
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
