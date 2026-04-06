@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { AdminActionButton } from "@/components/dashboard/AdminActionButton";
 
 export default async function AdminReviewsPage() {
   const supabase = createServiceRoleClient();
@@ -96,15 +97,22 @@ export default async function AdminReviewsPage() {
                 )}
               </div>
 
-              <div className="text-right flex-shrink-0">
+              <div className="text-right flex-shrink-0 space-y-2">
                 <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
                   review.published ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                 }`}>
                   {review.published ? "Pubblicata" : "Nascosta"}
                 </span>
-                <p className="text-xs text-gray-400 mt-1">
+                <p className="text-xs text-gray-400">
                   {new Date(review.created_at).toLocaleDateString("it-IT")}
                 </p>
+                <div className="pt-1">
+                  {review.published ? (
+                    <AdminActionButton targetId={review.id} targetType="review" action="hide" label="Nascondi" color="red" />
+                  ) : (
+                    <AdminActionButton targetId={review.id} targetType="review" action="show" label="Pubblica" color="green" />
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { createServiceRoleClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import { AdminActionButton } from "@/components/dashboard/AdminActionButton";
 
 export default async function AdminToursPage() {
   const supabase = createServiceRoleClient();
@@ -96,12 +97,19 @@ export default async function AdminToursPage() {
                     {new Date(tour.created_at).toLocaleDateString("it-IT")}
                   </td>
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/tour/${tour.id}`}
-                      className="text-xs font-medium text-[#D4A843] hover:underline"
-                    >
-                      Vedi
-                    </Link>
+                    <div className="flex gap-1.5">
+                      <Link
+                        href={`/tour/${tour.id}`}
+                        className="text-xs font-medium text-[#D4A843] hover:underline"
+                      >
+                        Vedi
+                      </Link>
+                      {tour.active ? (
+                        <AdminActionButton targetId={tour.id} targetType="tour" action="deactivate" label="Disattiva" color="red" confirmMessage="Disattivare questo tour?" />
+                      ) : (
+                        <AdminActionButton targetId={tour.id} targetType="tour" action="activate" label="Attiva" color="green" />
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -25,7 +25,7 @@ export default async function AdminShopsPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                {["Nome", "P.IVA", "Email", "Commissione", "QR ID", "Dashboard", "Stato"].map((h) => (
+                {["Nome", "P.IVA", "Email", "Commissione", "QR ID", "QR Download", "Dashboard", "Stato"].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-gray-500 font-medium text-xs uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
@@ -42,6 +42,24 @@ export default async function AdminShopsPage() {
                   <td className="px-4 py-3 text-gray-600">{shop.split_percentage_default}%</td>
                   <td className="px-4 py-3">
                     <code className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">{shop.qr_code_id?.slice(0, 12)}...</code>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-1.5">
+                      <a
+                        href={`/api/shops/qr/download?shop_id=${shop.id}&slug=${shop.qr_code_id}&format=png`}
+                        download
+                        className="text-xs bg-[#1B2A4A]/10 text-[#1B2A4A] px-2.5 py-1 rounded-full hover:bg-[#1B2A4A] hover:text-white transition-colors font-medium"
+                      >
+                        PNG
+                      </a>
+                      <a
+                        href={`/api/shops/qr/download?shop_id=${shop.id}&slug=${shop.qr_code_id}&format=svg`}
+                        download
+                        className="text-xs bg-[#D4A843]/10 text-[#D4A843] px-2.5 py-1 rounded-full hover:bg-[#D4A843] hover:text-white transition-colors font-medium"
+                      >
+                        SVG
+                      </a>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <Link href={`/dashboard/admin/shops/${shop.id}`} className="text-xs text-[#D4A843] font-medium hover:underline">

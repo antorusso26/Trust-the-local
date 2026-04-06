@@ -64,10 +64,10 @@ export function PublicFooter() {
             <div>
               <h4 className="font-heading font-semibold text-gold mb-4">{t("footer.info", "Informazioni")}</h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li><Link href="/" className="hover:text-white transition-colors">{t("footer.about", "Chi Siamo")}</Link></li>
-                <li><Link href="/" className="hover:text-white transition-colors">{t("footer.terms", "Termini e Condizioni")}</Link></li>
-                <li><Link href="/" className="hover:text-white transition-colors">{t("footer.privacy", "Privacy Policy")}</Link></li>
-                <li><Link href="/" className="hover:text-white transition-colors">{t("booking.cancelPolicy", "Politica di Cancellazione")}</Link></li>
+                <li><Link href="/chi-siamo" className="hover:text-white transition-colors">{t("footer.about", "Chi Siamo")}</Link></li>
+                <li><Link href="/termini" className="hover:text-white transition-colors">{t("footer.terms", "Termini e Condizioni")}</Link></li>
+                <li><Link href="/privacy" className="hover:text-white transition-colors">{t("footer.privacy", "Privacy Policy")}</Link></li>
+                <li><Link href="/cancellazione" className="hover:text-white transition-colors">{t("booking.cancelPolicy", "Politica di Cancellazione")}</Link></li>
               </ul>
             </div>
           </div>

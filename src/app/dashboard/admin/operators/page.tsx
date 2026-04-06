@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { createServiceRoleClient } from "@/lib/supabase/server";
+import { AdminActionButton } from "@/components/dashboard/AdminActionButton";
 
 const statusColor: Record<string, string> = {
   pending: "bg-yellow-100 text-yellow-800",
@@ -36,7 +37,7 @@ export default async function AdminOperatorsPage() {
           <table className="w-full text-sm">
             <thead className="bg-gray-50 border-b border-gray-100">
               <tr>
-                {["Azienda", "P.IVA", "Email", "Stripe KYC", "Tour", "Stato", "Registrato"].map((h) => (
+                {["Azienda", "P.IVA", "Email", "Stripe KYC", "Tour", "Stato", "Registrato", "Azioni"].map((h) => (
                   <th key={h} className="text-left px-4 py-3 text-gray-500 font-medium text-xs uppercase tracking-wide">{h}</th>
                 ))}
               </tr>
@@ -59,6 +60,16 @@ export default async function AdminOperatorsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{new Date(op.created_at).toLocaleDateString("it-IT")}</td>
+                  <td className="px-4 py-3">
+                    <div className="flex gap-1">
+                      {op.onboarding_status !== "verified" && (
+                        <AdminActionButton targetId={op.id} targetType="operator" action="approve" label="Approva" color="green" />
+                      )}
+                      {op.onboarding_status !== "rejected" && (
+                        <AdminActionButton targetId={op.id} targetType="operator" action="reject" label="Rifiuta" color="red" confirmMessage="Sei sicuro di voler rifiutare questo operatore?" />
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
