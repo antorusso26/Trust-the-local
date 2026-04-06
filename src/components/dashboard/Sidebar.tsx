@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Calendar, Star, Heart, Settings, Users,
-  MapPin, ShoppingBag, CreditCard, BarChart3, FileText,
+  MapPin, ShoppingBag, CreditCard, FileText,
   MessageSquare, LogOut, ChevronRight,
 } from "lucide-react";
 
@@ -45,7 +45,7 @@ const adminNav: NavItem[] = [
   { href: "/dashboard/admin/reviews", label: "Recensioni", icon: MessageSquare },
   { href: "/dashboard/admin/users", label: "Utenti", icon: Users },
   { href: "/dashboard/admin/logs", label: "Audit Log", icon: FileText },
-  { href: "/dashboard/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/dashboard/admin/settings", label: "Impostazioni", icon: Settings },
 ];
 
 const navMap = { tourist: touristNav, operator: operatorNav, admin: adminNav };

@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createServerSupabaseClient, createServiceRoleClient } from "@/lib/supabase/server";
-import { Plus, Eye, EyeOff, Edit } from "lucide-react";
+import { Plus, Eye, EyeOff, Edit, CalendarDays } from "lucide-react";
 
 function formatEur(cents: number) {
   return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(cents / 100);
@@ -95,6 +95,12 @@ export default async function OperatorToursPage() {
                     {tour.active ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                     {tour.active ? "Attivo" : "Bozza"}
                   </span>
+                  <Link
+                    href={`/dashboard/operator/tours/${tour.id}/availability`}
+                    className="flex items-center gap-1 text-xs bg-green-50 text-green-700 px-3 py-1.5 rounded-full hover:bg-green-600 hover:text-white transition-colors"
+                  >
+                    <CalendarDays className="w-3 h-3" /> Disponibilità
+                  </Link>
                   <Link
                     href={`/dashboard/operator/tours/${tour.id}`}
                     className="flex items-center gap-1 text-xs bg-[#1B2A4A]/10 text-[#1B2A4A] px-3 py-1.5 rounded-full hover:bg-[#1B2A4A] hover:text-white transition-colors"

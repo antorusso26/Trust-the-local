@@ -101,9 +101,11 @@
 
   "footer.about": "Chi Siamo",
   "footer.contact": "Contatti",
-  "footer.privacy": "Privacy",
-  "footer.terms": "Termini",
+  "footer.privacy": "Privacy Policy",
+  "footer.terms": "Termini e Condizioni",
   "footer.copyright": "Tutti i diritti riservati",
+  "footer.description": "Esperienze autentiche in Costiera Amalfitana con guide locali appassionate. La dolce vita inizia qui.",
+  "footer.info": "Informazioni",
 
   "auth.login": "Accedi",
   "auth.register": "Registrati",

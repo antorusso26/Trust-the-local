@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
+import { TranslationProvider } from "@/i18n/TranslationProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,7 +46,9 @@ export default function RootLayout({
       lang="it"
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <TranslationProvider>{children}</TranslationProvider>
+      </body>
     </html>
   );
 }

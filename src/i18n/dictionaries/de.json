@@ -101,9 +101,11 @@
 
   "footer.about": "Über uns",
   "footer.contact": "Kontakt",
-  "footer.privacy": "Datenschutz",
+  "footer.privacy": "Datenschutzerklärung",
   "footer.terms": "AGB",
   "footer.copyright": "Alle Rechte vorbehalten",
+  "footer.description": "Authentische Erlebnisse an der Amalfiküste mit leidenschaftlichen lokalen Guides. La dolce vita beginnt hier.",
+  "footer.info": "Informationen",
 
   "auth.login": "Anmelden",
   "auth.register": "Registrieren",

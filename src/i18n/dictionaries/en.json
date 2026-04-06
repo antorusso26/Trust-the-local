@@ -101,9 +101,11 @@
 
   "footer.about": "About Us",
   "footer.contact": "Contact",
-  "footer.privacy": "Privacy",
-  "footer.terms": "Terms",
+  "footer.privacy": "Privacy Policy",
+  "footer.terms": "Terms & Conditions",
   "footer.copyright": "All rights reserved",
+  "footer.description": "Authentic experiences on the Amalfi Coast with passionate local guides. La dolce vita starts here.",
+  "footer.info": "Information",
 
   "auth.login": "Sign In",
   "auth.register": "Sign Up",

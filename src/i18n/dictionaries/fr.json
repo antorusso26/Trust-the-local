@@ -101,9 +101,11 @@
 
   "footer.about": "À propos",
   "footer.contact": "Contact",
-  "footer.privacy": "Confidentialité",
-  "footer.terms": "Conditions",
+  "footer.privacy": "Politique de Confidentialité",
+  "footer.terms": "Conditions Générales",
   "footer.copyright": "Tous droits réservés",
+  "footer.description": "Expériences authentiques sur la Côte Amalfitaine avec des guides locaux passionnés. La dolce vita commence ici.",
+  "footer.info": "Informations",
 
   "auth.login": "Connexion",
   "auth.register": "Inscription",
